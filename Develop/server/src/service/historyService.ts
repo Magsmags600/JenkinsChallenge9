@@ -14,9 +14,13 @@
 //   // async removeCity(id: string) {}
 // }
 
-// export default new HistoryService();
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Simulate __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Define a City class with name and id properties
 class City {

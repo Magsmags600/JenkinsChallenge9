@@ -27,34 +27,37 @@ const router = Router();
 router.post('/', async (req: Request, res: Response) => {
   const { cityName } = req.body;
 
+  // Check if cityName is provided
   if (!cityName) {
     return res.status(400).json({ error: 'City name is required' });
   }
 
   try {
     // Get weather data from WeatherService
-    const weatherData = await WeatherService.getWeatherByCityName(cityName);
+    const weatherData = await WeatherService.getWeatherForCity(cityName);
 
-    // Save city to search history
-    await HistoryService.addCityToHistory(cityName);
+    // Save city to search history if weather data is retrieved
+    await HistoryService.addCity(cityName);
 
     // Return weather data to the client
-    res.json(weatherData);
+    return res.json(weatherData);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve weather data' });
+    console.error('Error fetching weather data:', error);
+    return res.status(500).json({ error: 'Failed to retrieve weather data' });
   }
 });
 
 // GET search history
-router.get('/history', async (req: Request, res: Response) => {
+router.get('/history', async (_req: Request, res: Response) => {
   try {
     // Get search history from HistoryService
-    const history = await HistoryService.getSearchHistory();
+    const history = await HistoryService.getCities();
 
     // Return history to the client
-    res.json(history);
+    return res.json(history);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve search history' });
+    console.error('Error retrieving search history:', error);
+    return res.status(500).json({ error: 'Failed to retrieve search history' });
   }
 });
 
@@ -64,12 +67,13 @@ router.delete('/history/:id', async (req: Request, res: Response) => {
 
   try {
     // Remove city from search history using HistoryService
-    await HistoryService.deleteCityFromHistory(id);
+    await HistoryService.removeCity(id);
 
     // Return success message
-    res.json({ message: 'City deleted from history' });
+    return res.json({ message: 'City deleted from history' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete city from search history' });
+    console.error('Error deleting city from search history:', error);
+    return res.status(500).json({ error: 'Failed to delete city from search history' });
   }
 });
 
