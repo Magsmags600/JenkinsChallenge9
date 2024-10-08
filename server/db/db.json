@@ -1,1 +1,12 @@
-[]
+{
+  "cities": [
+    {
+      "id": "irvine",
+      "name": "irvine"
+    },
+    {
+      "id": "los-angeles",
+      "name": "los angeles"
+    }
+  ]
+}
