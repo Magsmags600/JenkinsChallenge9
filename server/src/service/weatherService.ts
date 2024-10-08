@@ -15,7 +15,7 @@ class Weather {
   constructor(
     public cityName: string,
     public date: string,
-    public temperature: number,
+    public temp: number,
     public windSpeed: number,
     public humidity: number,
     public icon: string,
@@ -102,8 +102,10 @@ class WeatherService {
     noonForecasts.forEach((day: any) => {
       forecastArray.push(
         new Weather(
+          //change to .city remove Name
           this.cityName,
           new Date(day.dt * 1000).toLocaleDateString(),
+          
           day.main.temp,
           day.wind.speed,
           day.main.humidity,
